@@ -1,0 +1,54 @@
+# Project setup
+
+BACKEND >
+
+Creamos el package.json. 
+    npm init
+
+
+Crear .gitignore con:
+   / = /node_modules
+   / = .env
+
+!!! Instalar las DEPENDENCIAS 
+    Axios: unicamente para el front!
+
+    dotenv:  permite cargar variables de entorno desde un archivo .env (usado para credenciales de acceso a bases de datos, contraseñas, entre otros datos confidenciales.)
+    express: > crear aplicaciones web y APIs de forma rápida y sencilla
+    nodemon: el server se reinicia solo
+    mongoose: la base de datos
+    cors: connect back & front
+
+Crear app.js
+
+Crear conexion a base de datos. db > connect.js
+
+Obtener cluster y base de datos en MongoDB Atlas
+    Ve a Network Access > Borra tu direccion IP > Agrega una nueva > Permite todas las direcciones IP
+    Ve a Deployment > Database > *ClusterName* > Connect > Driver > Copia el codigo que tiene la contrsena 
+    Paste at .env que esta en la raiz del proyecto ('npm install dotenv' antes), sintaxis: MONGO_URI= codigo aqui (sin comillas)
+    Cambiar la parte de <password> por la contrase;a
+    Entre el '/' y el '?' podemos poner el nombre de la base de datos, si no existe, la crea automaticamente
+
+Crear un schema en models > Schema.js
+    Incluir ahi los items y validaciones que quieres poner en la db
+
+Crear la carpeta controllers. controller > controller.js
+    Importar la carpeta de Schema
+    Ahi meter cada (req, res) necesario
+
+Crear la carpeta routes
+    Importar la carpeta de controllers y su respectivo articulo
+    Crear las rutas '/'
+
+Importa todo el Middleware en app.js, ejemplo:
+    app.use(express.json()) <- Necesario para poder leer del req.body
+    app.use('/', items)
+
+Instalar Multer
+
+/////////////////////////////////////////////////////////////////////
+
+FRONTEND >
+
+Instalar Axios
