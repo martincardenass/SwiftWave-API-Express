@@ -6,7 +6,19 @@ const path = require('path')
 
 const getAllItems = async (req, res) => { // Get all Items
     try {
-        const items = await Item.find(req.body)
+        const sortField = req.query.sortField || 'price, date'
+        const sortOrder = req.query.sortOrder || 'asc'
+        const sortParameters = {}
+        sortParameters[sortField] = sortOrder === 'desc' ? -1 : 1
+        let query = {}
+
+        if(req.query.category) {
+            //query.category = req.query.category
+            const categories = req.query.category.split(',')
+            query.category = { $in: categories}
+        }
+
+        const items = await Item.find(query).sort(sortParameters)
         res.status(200).json({items})
     } catch (error) {
         res.status(500).json({msg: 'Error', error})
@@ -19,7 +31,9 @@ const createItems = async (req, res) => { // Create a new Item
             title: req.body.title,
             price: req.body.price,
             description: req.body.description,
-            image: req.file.path
+            image: req.file.path,
+            date: Date.now(),
+            category: req.body.category
         }
         const item = await Item.create(newItem)
         res.status(201).send(item)
