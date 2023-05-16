@@ -4,23 +4,50 @@ const Item = require('../models/Item')
 const multer = require('multer')
 const path = require('path')
 
-const getAllItems = async (req, res) => { // Get all Items
+const getAllItems = async (req, res) => {
     try {
-        const sortField = req.query.sortField || 'price, date'
-        const sortOrder = req.query.sortOrder || 'asc'
-        const sortParameters = {}
-        sortParameters[sortField] = sortOrder === 'desc' ? -1 : 1
-        let query = {}
-
-        if(req.query.category) {
-            //query.category = req.query.category
-            const categories = req.query.category.split(',')
-            query.category = { $in: categories}
-        }
-
-        const items = await Item.find(query).sort(sortParameters)
+        //const total = await Item.countDocuments(req.body) //gets the total of items matching the query
+        const items = await Item.find(req.body)
         res.status(200).json({items})
     } catch (error) {
+        res.status(500).json({msg: 'Error', error})
+    }
+}
+const getItemsByPage = async (req, res) => { // Get all Items
+    try {
+        //sorting
+        const sortField = req.query.sortField || 'price'
+        const sortOrder = req.query.sortOrder || ''
+        const sortParameters = {}
+        sortParameters[sortField] = sortOrder === 'desc' ? -1 : 1
+
+        //pagination
+        const limitSize = req.query.limit || 5
+        const pageNumber =  req.query.page || 1
+        const skipValue =(pageNumber - 1) * limitSize
+
+        //categories
+        let query = {}
+        // if(req.query.category) {
+        // query.category = req.query.category
+        // const categories = req.query.category.split(',') < Code for getting multiple categories, separted by commas ','
+        // query.category = { $in: categories}
+        // }
+        if(req.query.category) { query.category = req.query.category } // code for getting one category at a time
+        
+
+       const total = await Item.countDocuments(req.body) //gets the total of items matching the query
+       const queryTotal = await Item.countDocuments(query) //gets the total of the items of a certain category
+       const queryTotalPages = Math.ceil(queryTotal / 5)
+       const totalPages = Math.ceil(total / limitSize) //gets the total of pages
+       const currentPage = pageNumber
+
+        const items = await Item.find(query)
+            .skip(skipValue)
+            .limit(limitSize)
+            .sort(sortParameters)
+        res.status(200).json({items, total, totalPages, currentPage, queryTotal, queryTotalPages})
+    } catch (error) {   
         res.status(500).json({msg: 'Error', error})
     }
 }
@@ -109,6 +136,7 @@ const upload = multer({storage:storage}).single('image')
 
 module.exports = {  // export as an object
     getAllItems,
+    getItemsByPage,
     createItems,
     getItem,
     deleteItem,

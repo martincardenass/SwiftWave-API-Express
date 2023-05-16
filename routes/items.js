@@ -5,8 +5,11 @@ const router = express.Router()
 const itemsController = require('../controllers/items')
 //const {getAllItems, createItems, getItem, deleteItem, deleteAllItems, updateItem} = require('../controllers/items') < another way
 router.route('/items')
-    .get(itemsController.getAllItems)
+    .get(itemsController.getItemsByPage)
     .delete(itemsController.deleteAllItems)
+
+router.route('/items/all')
+    .get(itemsController.getAllItems)
 
 router.post('/addItem', itemsController.upload, itemsController.createItems)
 
