@@ -12,13 +12,18 @@ const itemSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+        float: false,
+        required: false
+    },
+    amount: {
+        type: Number,
         required: false
     },
     image: {
         type: String,
         required:false
     },
-    date: { // This will generate automatically
+    date: { //? This will generate automatically
         type: Date,
         required: true,
         unique: true
@@ -26,6 +31,10 @@ const itemSchema = new mongoose.Schema({
     category: {
         type: String,
         required: [true, 'Must provide Item Category']
+    },
+    isPopular: {
+        type: Boolean,
+        required: false
     }
 })
 
