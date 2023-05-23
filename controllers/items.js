@@ -12,6 +12,17 @@ const getAllItems = async (req, res) => {
         res.status(500).json({msg: 'Error', error})
     }
 }
+
+const getPopularItems = async (req, res) => {
+    try {
+        const items = await Item.find({isPopular: true}) // Will only get popular items
+        console.log('...')
+        res.status(200).json({items})        
+    } catch (error) {
+        res.status(500).json({msg: 'Error', error})
+    }
+}
+
 const getItemsByPage = async (req, res) => { //* Get all Items
     try {
         //*sorting
@@ -143,5 +154,6 @@ module.exports = {  // export as an object
     deleteItem,
     updateItem,
     deleteAllItems,
-    upload
+    upload,
+    getPopularItems
 }

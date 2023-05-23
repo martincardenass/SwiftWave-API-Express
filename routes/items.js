@@ -3,13 +3,16 @@ const router = express.Router()
 
 //Routes
 const itemsController = require('../controllers/items')
-//const {getAllItems, createItems, getItem, deleteItem, deleteAllItems, updateItem} = require('../controllers/items') < another way
+
 router.route('/items')
     .get(itemsController.getItemsByPage)
     .delete(itemsController.deleteAllItems)
 
 router.route('/items/all')
     .get(itemsController.getAllItems)
+
+router.route('/items/popular') // gets the popular items
+   .get(itemsController.getPopularItems)
 
 router.post('/addItem', itemsController.upload, itemsController.createItems)
 
