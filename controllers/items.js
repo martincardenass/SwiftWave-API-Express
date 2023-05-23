@@ -30,7 +30,7 @@ const getItemsByPage = async (req, res) => { //* Get all Items
         const sortParameters = {}
         sortParameters[sortField] = sortOrder === 'desc' ? -1 : 1
 
-        //*pagination
+        //*pagination!
         const limitSize = req.query.limit || 20
         const pageNumber =  req.query.page || 1
         const skipValue =(pageNumber - 1) * limitSize
