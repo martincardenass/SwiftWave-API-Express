@@ -16,7 +16,6 @@ const getAllItems = async (req, res) => {
 const getPopularItems = async (req, res) => {
     try {
         const items = await Item.find({isPopular: true}) // Will only get popular items
-        console.log('...')
         res.status(200).json({items})        
     } catch (error) {
         res.status(500).json({msg: 'Error', error})
@@ -32,7 +31,7 @@ const getItemsByPage = async (req, res) => { //* Get all Items
         sortParameters[sortField] = sortOrder === 'desc' ? -1 : 1
 
         //*pagination
-        const limitSize = req.query.limit || 5
+        const limitSize = req.query.limit || 20
         const pageNumber =  req.query.page || 1
         const skipValue =(pageNumber - 1) * limitSize
 
@@ -43,7 +42,7 @@ const getItemsByPage = async (req, res) => { //* Get all Items
 
        const total = await Item.countDocuments(req.body) //?gets the total of items matching the query
        const queryTotal = await Item.countDocuments(query) //?gets the total of the items of a certain category
-       const queryTotalPages = Math.ceil(queryTotal / 5)
+       const queryTotalPages = Math.ceil(queryTotal / limitSize)
        const totalPages = Math.ceil(total / limitSize) //?gets the total of pages
        const currentPage = pageNumber
 
