@@ -6,8 +6,10 @@ const path = require("path");
 
 const getAllItems = async (req, res) => {
   try {
-    const items = await Item.find(req.body);
-    res.status(200).json({ items });
+    const search = req.query.search || ''
+    const items = await Item.find({title: { $regex: search, $options: 'i' }});
+    const total = await Item.countDocuments({title: { $regex: search, $options: 'i' }});
+    res.status(200).json({ items, total});
   } catch (error) {
     res.status(500).json({ msg: "Error", error });
   }
