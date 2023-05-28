@@ -6,12 +6,12 @@ const itemsController = require('../controllers/items')
 
 router.route('/items')
     .get(itemsController.getItemsByPage)
-    .delete(itemsController.deleteAllItems)
+    //! .delete(itemsController.deleteAllItems) Database purge. Disabled to avoid accidental deletes.
 
 router.route('/items/all')
     .get(itemsController.getAllItems)
 
-router.route('/items/popular') // gets the popular items
+router.route('/items/popular')
    .get(itemsController.getPopularItems)
 
 router.post('/addItem', itemsController.upload, itemsController.createItems)
