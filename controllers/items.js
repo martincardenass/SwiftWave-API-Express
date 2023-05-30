@@ -91,7 +91,7 @@ const getItemsByPage = async (req, res) => {
     const lowestPrice = lPrice.length > 0 ? lPrice[0].price : null; //?gets only the value of the price
 
     const items = await Item.find(filter)
-      .skip(pagination)
+      .skip(pagination.skipValue)
       .limit(pagination.limitSize)
       .sort(sortParameters);
 
