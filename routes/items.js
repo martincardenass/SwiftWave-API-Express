@@ -6,7 +6,7 @@ const itemsController = require('../controllers/items')
 
 router.route('/items')
     .get(itemsController.getItemsByPage)
-    //! .delete(itemsController.deleteAllItems) Database purge. Disabled to avoid accidental deletes.
+    // .delete(itemsController.deleteAllItems) 
 
 router.route('/items/all')
     .get(itemsController.getAllItems)

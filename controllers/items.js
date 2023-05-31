@@ -14,7 +14,7 @@ const getSortQuery = (req) => {
 };
 
 const getPaginationQuery = (req) => {
-  const limitSize = req.query.limit || 5; //? max amount of items to paginate
+  const limitSize = req.query.limit || 20; //? max amount of items to paginate
   const pageNumber = req.query.page || 1; //? page number
   const skipValue = (pageNumber - 1) * limitSize;
   return {
@@ -44,11 +44,14 @@ const getCategoryQuery = (req, filter) => {
 
 const getAllItems = async (req, res) => {
   try {
+    const sortParameters = getSortQuery(req); //?sorting
     const search = req.query.search || "";
-    const items = await Item.find({ title: { $regex: search, $options: "i" } });
+
+    const items = await Item.find({ title: { $regex: search, $options: "i" } }).sort(sortParameters);
     const total = await Item.countDocuments({
       title: { $regex: search, $options: "i" },
     });
+
     res.status(200).json({ items, total });
   } catch (error) {
     res.status(500).json({ msg: "Error", error });
@@ -57,16 +60,22 @@ const getAllItems = async (req, res) => {
 
 const getPopularItems = async (req, res) => {
   try {
+    const pagination = getPaginationQuery(req); //?pagination
     const sortParameters = getSortQuery(req); //?sorting
-    const filter = {//? used to store various filtering conditions
+    const filter = {
+      //? used to store various filtering conditions
       isPopular: true,
     };
     getPriceQuery(req, filter); //?price
     getCategoryQuery(req, filter); //?category
 
-    const items = await Item.find(filter).sort(sortParameters); //? Will only get popular items
+    const items = await Item.find(filter)
+      .skip(pagination.skipValue)
+      .limit(pagination.limitSize)
+      .sort(sortParameters); //? Will only get popular items
     const total = await Item.countDocuments(filter); //? wWill count the number of popular items
-    res.status(200).json({ items, total });
+    const queryTotalPages = Math.ceil(total / pagination.limitSize);
+    res.status(200).json({ items, total, queryTotalPages });
   } catch (error) {
     res.status(500).json({ msg: "Error", error });
   }
