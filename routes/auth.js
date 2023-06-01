@@ -33,13 +33,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-const validate = (data) => {
-  const schema = Joi.object({
-    // username: Joi.string().required().label('username'),
-    email: Joi.string().email().required().label("email"),
-    password: Joi.string().required().label("password"),
-  });
-  return schema.validate(data);
-};
-
 module.exports = router;
