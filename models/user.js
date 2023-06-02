@@ -3,6 +3,13 @@ const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 
+// const cartSchema = new mongoose.Schema({
+//   item: {
+//     type: mongoose.Schema.Types.Mixed,
+//     required: false
+//   }
+// })
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -16,6 +23,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Must provide a password"],
   },
+  cart: {
+    type: mongoose.Schema.Types.Mixed,
+    required: false
+  }
 });
 
 userSchema.methods.generateAuthToken = function () {

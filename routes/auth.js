@@ -27,7 +27,8 @@ router.post("/", async (req, res) => {
     }
 
     const token = user.generateAuthToken();
-    res.status(200).send({ data: token, message: "Token is valid" });
+    const userId = user._id
+    res.status(200).send({data:{ token, userId }, message: "Token is valid"}); //? sends both the token and the userId
   } catch (error) {
     res.status(500).send({ message: "Internal server error" });
   }

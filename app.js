@@ -6,6 +6,8 @@ require('dotenv').config() // passing .env value to (Url)
 const cors = require('cors')
 const userRoutes = require('./routes/users')
 const authRoutes = require('./routes/auth')
+const getCart = require('./routes/cart')
+const postCart = require('./routes/postCart')
 
 //Middleware
 app.use(express.json())
@@ -16,6 +18,8 @@ app.use('/images', express.static('./images'))
 //Authentication routes
 app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/cart', getCart)
+app.use('/api/postcart', postCart)
 
 const port = 3001
 
