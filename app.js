@@ -21,6 +21,10 @@ app.use('/api/auth', authRoutes)
 app.use('/api/cart', getCart)
 app.use('/api/postcart', postCart)
 
+app.use(function(req, res, next) {
+    res.status(404).send('Page not found');
+  });
+
 const port = 3001
 
 const start = async () => {
