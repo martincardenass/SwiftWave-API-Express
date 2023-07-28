@@ -1,6 +1,6 @@
 # SwiftWave-Expressjs-backend
 (NodeJS, ExpressJS, Mongo, React)
-#### You can read more in the SwiftWave-React-Frontend repository
+#### You can read more in the SwiftWave Vite React repository
 
 ## Key Features:
 
